@@ -1,0 +1,710 @@
+<?php
+	function format_id($string) {
+		return strtolower(preg_replace('/[^0-9A-Za-z]/','',$string));
+	}
+	function style_content() {
+?>
+#save_button {
+	flex: none;
+	width: 30px;
+}
+#save {
+	height: 50px;
+}
+#header {
+	flex: 1;
+}
+form {
+	flex: 1;
+	overflow: auto;
+}
+form div {
+	padding: 5px;
+}
+.item {
+	border-bottom: 1px solid #444547;
+	padding: 10px;
+}
+.parts {
+	margin: 5px 0 0 30px;
+	padding: 0;
+	border-top: 1px solid #444547;
+}
+#making_dialog {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: #1D1D1F;
+	display: none;
+	flex-direction: column;
+}
+#making_top_container {
+	flex: none;
+	display: flex;
+	flex-direction: row;
+	padding: 0 0.5em;
+	height: 60px;
+	background: #735B39;
+	color: #FFEDD2;
+}
+#making_contents {
+	flex: 1;
+	overflow: auto;
+	padding: 1em;
+}
+#item_name {
+	text-align: center;
+}
+#making_dialog button {
+	font-size: 16px;
+	margin: 0 0.25em;
+}
+<?php
+	}
+	function header_content() {
+?>
+	<div id="header">
+		<h2>Ship Building Materials</h2>
+	</div>
+	<div id="save_button">
+		<button id="save">Save</button>
+	</div>
+<?php
+	}
+	function body_content() {
+		$boats = array(
+			'Epheria Frigate' => array(
+				'link' => 'https://grumpygreen.cricket/bdo-epheria-frigate-guide/',
+				'parts' => array(
+					array(
+						'name' => 'Standardized Timber Square',
+						'qty' => 1000,
+						'making' => array(
+							'Chop 10x Log -> 1x Usable Scantling',
+							'Chop 10x Usable Scantling -> 1x'
+						),
+						'parts' => array(
+							array(
+								'name' => 'Log',
+								'qty' => 100000
+							)
+						)
+					),
+					array(
+						'name' => 'Jade Coral Ingot',
+						'qty' => 800,
+						'making' => array(
+							'Heat 5x Titanium Ore -> 1x Melted Titanium Shard',
+							'Heat 15x Melted Titanium Shard and 5x [Prairie Green Coral, Golden Sun Coral, Breezy White Coral, Twilight Red Coral, OR Daybreak Blue Coral] -> 1x'
+						),
+						'parts' => array(
+							array(
+								'name' => 'Titanium Ore',
+								'qty' => 60000
+							)
+						)
+					),
+					array(
+						'name' => 'Pine Coated Plywood',
+						'qty' => 1600
+					),
+					array(
+						'name' => 'Enhanced Flax Fabric',
+						'qty' => 450
+					),
+					array(
+						'name' => 'Design: Epheria Frigate',
+						'qty' => 25
+					)
+				)
+			),
+			'Epheria Frigate (Upgrade)' => array(
+				'link' => 'https://grumpygreen.cricket/bdo-bartali-sailboat-upgrade-guide-how-to-recipe-materials/',
+				'parts' => array(
+					array(
+						'name' => 'Standardized Timber Square',
+						'qty' => 1000,
+						'making' => array(
+							'Chop 10x Log -> 1x Usable Scantling',
+							'Chop 10x Usable Scantling -> 1x'
+						),
+						'parts' => array(
+							array(
+								'name' => 'Log',
+								'qty' => 100000
+							)
+						)
+					),
+					array(
+						'name' => 'Jade Coral Ingot',
+						'qty' => 800,
+						'making' => array(
+							'Heat 5x Titanium Ore -> 1x Melted Titanium Shard',
+							'Heat 15x Melted Titanium Shard and 5x [Prairie Green Coral, Golden Sun Coral, Breezy White Coral, Twilight Red Coral, OR Daybreak Blue Coral] -> 1x'
+						),
+						'parts' => array(
+							array(
+								'name' => 'Titanium Ore',
+								'qty' => 60000
+							)
+						)
+					),
+					array(
+						'name' => 'Pine Coated Plywood',
+						'qty' => 1000,
+						'making' => array(
+							'Chop 5x Pine Timber -> 1x Pine Plank',
+							'Chop 10x Pine Plank -> 1x Pine Plywood',
+							'Heat 50x Coconut and 5x Pine Plywood -> 1x'
+						),
+						'parts' => array(
+							array(
+								'name' => 'Coconut',
+								'qty' => 50000
+							),
+							array(
+								'name' => 'Pine Timber',
+								'qty' => 250000
+							)
+						)
+					),
+					array(
+						'name' => 'Enhanced Flax Fabric',
+						'qty' => 450,
+						'making' => array(
+							'Heat 5x Flax -> 1x Flax Thread',
+							'Grind 10x Flax Thread -> 1x Flax Fabric',
+							'Grind 5x Shining Powder and 5x Flax Fabric -> 1x'
+						),
+						'parts' => array(
+							array(
+								'name' => 'Flax',
+								'qty' => 112500
+							),
+							array(
+								'name' => 'Shining Powder',
+								'qty' => 2250
+							)
+						)
+					),
+					array(
+						'name' => 'Hard Pillar',
+						'qty' => 100,
+						'making' => array(
+							'Alchemy Tool 1x Sugar, 1x Silver Azalea, 1x Purified Water, and 1x Wild Herb -> 1x Pure Powder Reagent',
+							'Alchemy Tool 1x Pure Powder Reagent, 4x Fir Sap, 3x Bloody Tree Knot, and 3x Trace of the Earth -> 1x Plywood Hardener',
+							'Heat 10x Plywood Hardener and 10x Log -> 1x'
+						),
+						'parts' => array(
+							array(
+								'name' => 'Log',
+								'qty' => 1000
+							),
+							array(
+								'name' => 'Sugar',
+								'qty' => 1000
+							),
+							array(
+								'name' => 'Silver Azalea',
+								'qty' => 1000
+							),
+							array(
+								'name' => 'Purified Water',
+								'qty' => 1000
+							),
+							array(
+								'name' => 'Wild Herb',
+								'qty' => 1000
+							),
+							array(
+								'name' => 'Fir Sap',
+								'qty' => 4000
+							),
+							array(
+								'name' => 'Bloody Tree Knot',
+								'qty' => 3000
+							),
+							array(
+								'name' => 'Trace of the Earth',
+								'qty' => 3000
+							)
+						)
+					),
+					array(
+						'name' => 'Ship Upgrade Permit: Epheria Frigate',
+						'qty' => 1
+					),
+					array(
+						'name' => 'Bartali Sailboat: Old Prow',
+						'qty' => '+10',
+					),
+					array(
+						'name' => 'Bartali Sailboat: Old Plating',
+						'qty' => '+10',
+					),
+					array(
+						'name' => 'Bartali Sailboat: Old Cannon',
+						'qty' => '+10',
+					),
+					array(
+						'name' => 'Bartali Sailboat: Old Wind Sail',
+						'qty' => '+10',
+					)
+				)
+			),
+			'Improved Epheria Frigate' => array(
+				'link' => 'https://grumpygreen.cricket/bdo-epheria-frigate-upgrade-galleass-or-improved-design-materials-quest/',
+				'parts' => array(
+					array(
+						'name' => 'Standardized Timber Square',
+						'qty' => 250
+					),
+					array(
+						'name' => 'Steel',
+						'qty' => 200
+					),
+					array(
+						'name' => 'Pine Plywood',
+						'qty' => 500
+					),
+					array(
+						'name' => 'Flax Fabric',
+						'qty' => 100
+					),
+					array(
+						'name' => 'Hard Pillar',
+						'qty' => 30
+					),
+					array(
+						'name' => 'Ultimate Weapon Reform Stone',
+						'qty' => 10
+					),
+					array(
+						'name' => 'Epheria: Old Prow',
+						'qty' => 1,
+					),
+					array(
+						'name' => 'Epheria: Old Plating',
+						'qty' => 1,
+					),
+					array(
+						'name' => 'Epheria: Old Cannon',
+						'qty' => 1,
+					),
+					array(
+						'name' => 'Epheria: Old Wind Sail',
+						'qty' => 1,
+					)
+				)
+			),
+			'Galleass' => array(
+				'link' => 'https://grumpygreen.cricket/bdo-epheria-frigate-upgrade-galleass-or-improved-design-materials-quest/',
+				'parts' => array(
+					array(
+						'name' => 'Graphite Ingot for Upgrade',
+						'qty' => 100,
+						'parts' => array(
+							array(
+								'name' => 'Zinc Ingot',
+								'qty' => 10000
+							),
+							array(
+								'name' => 'Sea Monster\'s Ooze',
+								'qty' => 100
+							)
+						)
+					),
+					array(
+						'name' => 'Timber for Upgrade',
+						'qty' => 100,
+						'parts' => array(
+							array(
+								'name' => 'Old Tree Bark',
+								'qty' => 10000
+							),
+							array(
+								'name' => 'Red Tree Lump',
+								'qty' => 10000
+							),
+							array(
+								'name' => 'Sea Monster\'s Ooze',
+								'qty' => 100
+							)
+						)
+					),
+					array(
+						'name' => 'Adhesive for Upgrade',
+						'qty' => 100,
+						'parts' => array(
+							array(
+								'name' => 'White Cedar Sap',
+								'qty' => 10000
+							),
+							array(
+								'name' => 'Acacia Sap',
+								'qty' => 10000
+							),
+							array(
+								'name' => 'Elder Tree Sap',
+								'qty' => 10000
+							),
+							array(
+								'name' => 'Sea Monster\'s Ooze',
+								'qty' => 100
+							)
+						)
+					),
+					array(
+						'name' => 'Ship Upgrade Permit: Epheria Galleass',
+						'qty' => 1
+					),
+					array(
+						'name' => 'Island Tree Coated Plywood',
+						'qty' => 100
+					),
+					array(
+						'name' => 'Tide-Dyed Standardized Timber Square',
+						'qty' => 6
+					),
+					array(
+						'name' => 'Cobalt Ingot',
+						'qty' => 2
+					),
+					array(
+						'name' => 'Moon Scale Plywood',
+						'qty' => 10
+					),
+					array(
+						'name' => 'Epheria: Old Prow',
+						'qty' => '+10',
+					),
+					array(
+						'name' => 'Epheria: Old Plating',
+						'qty' => '+10',
+					),
+					array(
+						'name' => 'Epheria: Old Cannon',
+						'qty' => '+10',
+					),
+					array(
+						'name' => 'Epheria: Old Wind Sail',
+						'qty' => '+10',
+					)
+				)
+			),
+			'Volante' => array(
+				'link' => 'https://grumpygreen.cricket/bdo-epheria-galleass-upgrade-carrack/',
+				'parts' => array(
+					array(
+						'name' => 'Moon Vein Flax Fabric',
+						'qty' => 210
+					),
+					array(
+						'name' => 'Deep Tide-Dyed Standardized Timber Square',
+						'qty' => 144
+					),
+					array(
+						'name' => 'Brilliant Rock Salt Ingot',
+						'qty' => 30
+					),
+					array(
+						'name' => 'Tear of the Ocean',
+						'qty' => 42
+					),
+					array(
+						'name' => 'Brilliant Pearl Shard',
+						'qty' => 30
+					),
+					array(
+						'name' => 'Epheria Galleass: Black Dragon Prow',
+						'qty' => '+10',
+						'parts' => array(
+							array(
+								'name' => 'Epheria Galleass: White Horn Prow',
+								'qty' => '+10'
+							),
+							array(
+								'name' => 'Ruddy Manganese Nodule',
+								'qty' => '50'
+							),
+							array(
+								'name' => 'Enhanced Island Tree Coated Plywood',
+								'qty' => '300'
+							),
+							array(
+								'name' => 'Seaweed Stalk',
+								'qty' => '125'
+							),
+							array(
+								'name' => 'Great Ocean Dark Iron',
+								'qty' => '150'
+							)
+						)
+					),
+					array(
+						'name' => 'Epheria Galleass: Blue-Grade Upgraded Plating',
+						'qty' => '+10',
+						'parts' => array(
+							array(
+								'name' => 'Epheria Galleass: Green-Grade Upgraded Plating',
+								'qty' => '+10'
+							),
+							array(
+								'name' => 'Pure Pearl Crystal',
+								'qty' => '45'
+							),
+							array(
+								'name' => 'Cox Pirate\'s Artifact (Parley Beginner)',
+								'qty' => '60'
+							),
+							array(
+								'name' => 'Cox Pirate\'s Artifact (Combat)',
+								'qty' => '125'
+							),
+							array(
+								'name' => 'Moon Scale Plywood',
+								'qty' => '300'
+							)
+						)
+					),
+					array(
+						'name' => 'Epheria Galleass: Mayna Cannon',
+						'qty' => '+10',
+						'parts' => array(
+							array(
+								'name' => 'Epheria Galleass: Verisha Cannon',
+								'qty' => '+10'
+							),
+							array(
+								'name' => 'Tide-Dyed Standardized Timber Square',
+								'qty' => '180'
+							),
+							array(
+								'name' => 'Cox Pirate\'s Artifact (Combat)',
+								'qty' => '125'
+							),
+							array(
+								'name' => 'Moon Scale Plywood',
+								'qty' => '300'
+							),
+							array(
+								'name' => 'Bright Reef Piece',
+								'qty' => '180'
+							)
+						)
+					),
+					array(
+						'name' => 'Epheria Galleass: Stratus Wind Sail',
+						'qty' => '+10',
+						'parts' => array(
+							array(
+								'name' => 'Epheria Galleass: White Wind Sail',
+								'qty' => '+10'
+							),
+							array(
+								'name' => 'Ruddy Manganese Nodule',
+								'qty' => '50'
+							),
+							array(
+								'name' => 'Cox Pirate\'s Artifact (Parley Expert)',
+								'qty' => '30'
+							),
+							array(
+								'name' => 'Seaweed Stalk',
+								'qty' => '125'
+							),
+							array(
+								'name' => 'Luminous Cobalt Ingot',
+								'qty' => '30'
+							)
+						)
+					)
+				)
+			),
+			'Valor' => array(
+				'link' => 'https://grumpygreen.cricket/bdo-epheria-galleass-upgrade-carrack/',
+				'parts' => array(
+					array(
+						'name' => 'Moon Vein Flax Fabric',
+						'qty' => 180
+					),
+					array(
+						'name' => 'Deep Tide-Dyed Standardized Timber Square',
+						'qty' => 170
+					),
+					array(
+						'name' => 'Brilliant Rock Salt Ingot',
+						'qty' => 30
+					),
+					array(
+						'name' => 'Tear of the Ocean',
+						'qty' => 42
+					),
+					array(
+						'name' => 'Brilliant Pearl Shard',
+						'qty' => 30
+					),
+					array(
+						'name' => 'Epheria Galleass: Black Dragon Prow',
+						'qty' => '+10',
+						'parts' => array(
+							array(
+								'name' => 'Epheria Galleass: White Horn Prow',
+								'qty' => '+10'
+							),
+							array(
+								'name' => 'Ruddy Manganese Nodule',
+								'qty' => '50'
+							),
+							array(
+								'name' => 'Enhanced Island Tree Coated Plywood',
+								'qty' => '300'
+							),
+							array(
+								'name' => 'Seaweed Stalk',
+								'qty' => '125'
+							),
+							array(
+								'name' => 'Great Ocean Dark Iron',
+								'qty' => '150'
+							)
+						)
+					),
+					array(
+						'name' => 'Epheria Galleass: Blue-Grade Upgraded Plating',
+						'qty' => '+10',
+						'parts' => array(
+							array(
+								'name' => 'Epheria Galleass: Green-Grade Upgraded Plating',
+								'qty' => '+10'
+							),
+							array(
+								'name' => 'Pure Pearl Crystal',
+								'qty' => '45'
+							),
+							array(
+								'name' => 'Cox Pirate\'s Artifact (Parley Beginner)',
+								'qty' => '60'
+							),
+							array(
+								'name' => 'Cox Pirate\'s Artifact (Combat)',
+								'qty' => '125'
+							),
+							array(
+								'name' => 'Moon Scale Plywood',
+								'qty' => '300'
+							)
+						)
+					),
+					array(
+						'name' => 'Epheria Galleass: Mayna Cannon',
+						'qty' => '+10',
+						'parts' => array(
+							array(
+								'name' => 'Epheria Galleass: Verisha Cannon',
+								'qty' => '+10'
+							),
+							array(
+								'name' => 'Tide-Dyed Standardized Timber Square',
+								'qty' => '180'
+							),
+							array(
+								'name' => 'Cox Pirate\'s Artifact (Combat)',
+								'qty' => '125'
+							),
+							array(
+								'name' => 'Moon Scale Plywood',
+								'qty' => '300'
+							),
+							array(
+								'name' => 'Bright Reef Piece',
+								'qty' => '180'
+							)
+						)
+					),
+					array(
+						'name' => 'Epheria Galleass: Stratus Wind Sail',
+						'qty' => '+10',
+						'parts' => array(
+							array(
+								'name' => 'Epheria Galleass: White Wind Sail',
+								'qty' => '+10'
+							),
+							array(
+								'name' => 'Ruddy Manganese Nodule',
+								'qty' => '50'
+							),
+							array(
+								'name' => 'Cox Pirate\'s Artifact (Parley Expert)',
+								'qty' => '30'
+							),
+							array(
+								'name' => 'Seaweed Stalk',
+								'qty' => '125'
+							),
+							array(
+								'name' => 'Luminous Cobalt Ingot',
+								'qty' => '30'
+							)
+						)
+					)
+				)
+			)
+		);
+		global $db;
+		$db->setQuery('SELECT `materials` FROM `ship_building_materials` WHERE `user_id`=%d');
+		$db->runQuery($_SESSION['user']);
+		$materials = $db->getResultSingle();
+		if($materials) {
+			$materials = json_decode($materials);
+		}
+?>
+<form action="/ship-building-materials" method="post" id="ship-building-materials">
+	<div>
+<?php
+		foreach($boats as $boatname => $boat) {
+			$boatid = format_id($boatname);
+?>
+		<fieldset>
+			<legend><label><?=$boatname?> <input type="checkbox" name="<?=$boatid?>" value="1" class="build"<?=$materials&&isset($materials->{$boatid})?' checked="checked"':''?> /></legend>
+			<div class="item"><a href="<?=$boat['link']?>" target="_blank"><?=$boat['link']?></a></div>
+<?php
+			foreach($boat['parts'] as $item) {
+				$itemid = $boatid . '_' . format_id($item['name']);
+				$making = isset($item['making'])?htmlspecialchars(json_encode($item['making'])):'';
+?>
+			<div class="item">
+				<label><span class="name"><?=$item['name']?></span><?=$making?' (<a href="#" class="making" data-steps="' . $making . '">How To Make</a>)':''?><br /><input type="number" name="<?=$itemid?>" value="<?=$materials&&isset($materials->{$itemid})?$materials->{$itemid}:0?>" /> / <?=$item['qty']?></label>
+<?php if(isset($item['parts']) && count($item['parts'])) { ?>
+				<div class="parts">
+<?php
+				foreach($item['parts'] as $part) {
+					$partid = $itemid . '_' . format_id($part['name']);
+?>
+					<div class="item">
+						<label><?=$part['name']?><br /><input type="number" name="<?=$partid?>" value="<?=$materials&&isset($materials->{$partid})?$materials->{$partid}:0?>" /> / <?=$part['qty']?></label>
+					</div>
+<?php } ?>
+				</div>
+<?php } ?>
+			</div>
+<?php } ?>
+		</fieldset>
+<?php } ?>
+	</div>
+</form>
+<div id="making_dialog">
+	<div id="making_top_container">
+		<h2 id="item_name"></h2>
+	</div>
+	<div id="making_contents">
+		<div id="making_steps"></div>
+		<div style="text-align: center; margin-top: 1em;">
+			<button id="making_close">Close</button>
+		</div>
+	</div>
+</div>
+<?php
+	}

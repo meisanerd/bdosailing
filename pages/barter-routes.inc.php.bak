@@ -1,0 +1,176 @@
+<?php
+	function style_content() {
+?>
+#complete_button {
+	flex: none;
+	width: 60px;
+}
+#complete {
+	height: 50px;
+}
+#parley_container {
+	flex: 1;
+}
+#parley_container input {
+	width: 100px;
+}
+#trades {
+	flex: 1;
+	overflow: auto;
+}
+.trade {
+	padding: 5px;
+	border-bottom: 1px dotted #000000;
+}
+.trade.overweight, .trade.noparley {
+	background: #FFAAAA;
+}
+.sort_block {
+	float: left;
+	width: 50px;
+	height: 60px;
+	margin-right: 5px;
+	border: 1px solid #000000;
+	text-align: center;
+	line-height: 30px;
+}
+#bottom_container {
+	flex: none;
+}
+#add_trade {
+	padding: 5px;
+}
+#trades .data .id, #trades .data .num, #trades .data .parley, #trades .data .weight {
+	display: none;
+}
+#trade_dialog {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: #FFFFFF;
+	display: none;
+	padding: 1em
+}
+#trade_dialog button {
+	font-size: 16px;
+	margin: 0 0.25em;
+}
+<?php
+	}
+	function header_content() {
+		global $db;
+		$db->setQuery('SELECT `parley`,`weight` FROM `users` WHERE `id`=%d');
+		$db->runQuery($_SESSION['user']);
+		$userdata = $db->getResult();
+?>
+	<div id="parley_container">
+		<div>Parley: <input type="text" id="parley" value="<?=$userdata->parley?>" /></div>
+		<div>Weight: <input type="text" id="weight" value="<?=$userdata->weight?>" /></div>
+	</div>
+	<div id="complete_button">
+		<button id="complete">Mark First Complete</button>
+	</div>
+<?php
+	}
+	function body_content() {
+		global $db;
+		require_once('templates/barter.php');
+?>
+<div id="trades">
+<?php
+		$db->setQuery('SELECT * FROM `trades` WHERE `user_id`=%d ORDER BY `pos` ASC, `id` ASC');
+		$db->runQuery($_SESSION['user']);
+		$trades = $db->getResults();
+		$db->setQuery('SELECT `id`,`name` FROM `trade_locations`');
+		$db->runQuery();
+		$locations = $db->getResultsSingleIndexed();
+		$db->setQuery('SELECT * FROM `trade_items`');
+		$db->runQuery();
+		$trade_items = $db->getResultsIndexed();
+		foreach($trades as $trade) {
+			barter($trade, $locations, $trade_items);
+		}
+?>
+	<div id="add_trade" data-id="0">Add</div>
+</div>
+<div id="trade_dialog">
+	<h2></h2>
+	<dl>
+		<dt><label for="trade_location">Location:</label></dt>
+		<dd><select id="trade_location">
+			<option value="">Select...</option>
+<?php foreach($locations as $id => $name) { ?>
+			<option value="<?=$id?>"><?=$name?></option>
+<?php } ?>
+		</select></dd>
+		<dt><label for="trade_num">Number of trades:</label></dt>
+		<dd><input type="number" id="trade_num" /></dd>
+	</dl>
+	<fieldset>
+		<legend>Per Trade</legend>
+		<dl>
+			<dt><label for="trade_input">Barter Item:</label></dt>
+			<dd><select id="trade_input">
+				<option value="">Select...</option>
+<?php
+		$lastlevel = -1;
+		foreach($trade_items as $id => $item) {
+			if($item->level != $lastlevel) {
+				if($lastlevel != -1) {
+?>
+				</optgroup>
+<?php
+				}
+				$lastlevel = $item->level;
+?>
+				<optgroup label="<?=$lastlevel?'Level ' . $lastlevel:'Misc'?>">
+<?php
+			}
+?>
+					<option value="<?=$id?>"><?=$item->name?></option>
+<?php } ?>
+				</optgroup>
+			</select></dd>
+			<dt><label for="trade_input_qty">Barter Quantity:</label></dt>
+			<dd><input type="number" id="trade_input_qty" /></dd>
+			<dt><label for="trade_output">Result Item:</label></dt>
+			<dd><select id="trade_output">
+				<option value="">Select...</option>
+<?php
+		$lastlevel = -1;
+		foreach($trade_items as $id => $item) {
+			if($item->level != $lastlevel) {
+				if($lastlevel != -1) {
+?>
+				</optgroup>
+<?php
+				}
+				$lastlevel = $item->level;
+?>
+				<optgroup label="<?=$lastlevel?'Level ' . $lastlevel:'Misc'?>">
+<?php
+			}
+?>
+					<option value="<?=$id?>"><?=$item->name?></option>
+<?php } ?>
+			</select></dd>
+			<dt><label for="trade_output_qty">Result Quantity:</label></dt>
+			<dd><input type="number" id="trade_output_qty" /></dd>
+			<dt><label for="trade_parley">Parley:</label></dt>
+			<dd><input type="number" id="trade_parley" /></dd>
+		</dl>
+	</fieldset>
+	<div style="text-align: center">
+		<button id="trade_save">Save</button>
+		<button id="trade_save_close">Save and Close</button>
+		<button id="trade_close">Close</button>
+	</div>
+	<div style="text-align: center; margin-top: 1em;" class="edit_trade">
+		<button id="trade_complete">Complete</button>
+		<button id="trade_cancel">Delete</button>
+	</div>
+</div>
+<?php
+	}

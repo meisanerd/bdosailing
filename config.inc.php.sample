@@ -1,0 +1,13 @@
+<?php
+	session_start();
+	$dbconfig = new stdClass();
+	$dbconfig->host = 'localhost';
+	$dbconfig->user = 'DBUSER';
+	$dbconfig->pass = 'DBPASS';
+	$dbconfig->db = 'DBNAME';
+	
+	require_once('database.inc.php');
+	$db = new Database($dbconfig);
+	
+	$messages = array();
+	$errors = array();
