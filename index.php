@@ -182,6 +182,7 @@
 		<div><a href="/add-location">Add Location</a></div>
 <?php } ?>
 		<div><a href="/user">Your Profile</a></div>
+		<div><a href="/help">Help</a></div>
 		<div><a href="/?logout=true">Log Out</a></div>
 	</div>
 </div>
