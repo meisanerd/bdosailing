@@ -182,6 +182,7 @@ CREATE TABLE `users` (
   `username` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `parley` int(10) unsigned DEFAULT NULL,
+  `default_parley` int(10) unsigned DEFAULT NULL,
   `weight` decimal(7,2) DEFAULT NULL,
   `current_weight` decimal(7,2) DEFAULT NULL,
   `admin` tinyint(1) DEFAULT 0,
@@ -195,7 +196,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'admin','12345',1000000,0.00,0.00,1));
+INSERT INTO `users` VALUES (1,'admin','12345',1000000,1,0.00,0.00,1));
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

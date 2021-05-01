@@ -2,8 +2,8 @@
 	function handle_post() {
 		if(isset($_POST['weight']) && intval($_POST['weight'])) {
 			global $db, $messages;;
-			$db->setQuery('UPDATE `users` SET `weight`=%f WHERE `id`=%d');
-			$db->runQuery($_POST['weight'], $_SESSION['user']);
+			$db->setQuery('UPDATE `users` SET `weight`=%f, `default_parley`=%d WHERE `id`=%d');
+			$db->runQuery($_POST['weight'], $_POST['default_parley'], $_SESSION['user']);
 			$messages[] = 'User settings have been saved.';
 			if(isset($_POST['password'],$_POST['password1'],$_POST['password2']) && $_POST['password1']) {
 				if($_POST['password1'] == $_POST['password2']) {
@@ -63,6 +63,8 @@ form div {
 			<dd><?=$user->username?></dd>
 			<dt><label for="weight">Available Boat Weight:</label></dt>
 			<dd><input type="number" name="weight" id="weight" value="<?=$user->weight?>" required="required" /></dd>
+			<dt><label for="default_parley">Default Parley:</label></dt>
+			<dd><input type="number" name="default_parley" id="default_parley" value="<?=$user->default_parley?>" required="required" /></dd>
 		</dl>
 		<fieldset>
 			<legend>Password Change</legend>

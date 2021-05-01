@@ -49,6 +49,9 @@
 		$db->setQuery('SELECT * FROM `trade_items` ORDER BY `level` ASC, `name` ASC');
 		$db->runQuery();
 		$trade_items = $db->getResultsIndexed();
+		$db->setQuery('SELECT `default_parley` FROM `users` WHERE `id`=%d');
+		$db->runQuery($_SESSION['user']);
+		$default_parley = $db->getResultSingle();
 ?>
 	<div id="trade_top_container">
 		<h2><?=$trade?'Edit':'Add'?> Barter</h2>
@@ -122,7 +125,7 @@
 				<dt><label for="trade_output_qty">Result Quantity:</label></dt>
 				<dd><input type="number" id="trade_output_qty" value="<?=$trade?intval($trade->output_qty):1?>" /></dd>
 				<dt><label for="trade_parley">Parley:</label></dt>
-				<dd><input type="number" id="trade_parley" value="<?=$trade?intval($trade->parley):0?>" /></dd>
+				<dd><input type="number" id="trade_parley" value="<?=$trade?intval($trade->parley):$default_parley?>" /></dd>
 			</dl>
 		</fieldset>
 <?php if(!$trade) { ?>
