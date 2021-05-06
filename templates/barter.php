@@ -49,9 +49,9 @@
 		$db->setQuery('SELECT * FROM `trade_items` ORDER BY `level` ASC, `name` ASC');
 		$db->runQuery();
 		$trade_items = $db->getResultsIndexed();
-		$db->setQuery('SELECT `default_parley` FROM `users` WHERE `id`=%d');
+		$db->setQuery('SELECT `default_parley`,`show_suggestions` FROM `users` WHERE `id`=%d');
 		$db->runQuery($_SESSION['user']);
-		$default_parley = $db->getResultSingle();
+		$user_settings = $db->getResult();
 ?>
 	<div id="trade_top_container">
 		<h2><?=$trade?'Edit':'Add'?> Barter</h2>
@@ -68,7 +68,9 @@
 			<dt><label for="trade_num">Number of trades:</label></dt>
 			<dd><input type="number" id="trade_num" value="<?=$trade?intval($trade->num):1?>" /></dd>
 		</dl>
+<?php if($user_settings->show_suggestions) { ?>
 		<div id="suggestions"></div>
+<?php } ?>
 		<fieldset>
 			<legend>Per Trade</legend>
 			<dl>
@@ -125,7 +127,7 @@
 				<dt><label for="trade_output_qty">Result Quantity:</label></dt>
 				<dd><input type="number" id="trade_output_qty" value="<?=$trade?intval($trade->output_qty):1?>" /></dd>
 				<dt><label for="trade_parley">Parley:</label></dt>
-				<dd><input type="number" id="trade_parley" value="<?=$trade?intval($trade->parley):$default_parley?>" /></dd>
+				<dd><input type="number" id="trade_parley" value="<?=$trade?intval($trade->parley):$user_settings->default_parley?>" /></dd>
 			</dl>
 		</fieldset>
 <?php if(!$trade) { ?>

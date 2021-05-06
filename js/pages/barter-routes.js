@@ -46,17 +46,19 @@ function create_pos_select() {
 	}
 }
 function load_suggestions() {
-	var location = $("#trade_location").length?$("#trade_location").val():0;
-	var input = $(".data .output",$(".trade").last()).data("id");
-	var output = $(".data .input",$(".trade").last()).data("id");
-	$("#suggestions").load("/ajax/barter-suggestions.php", {location: location, input: input, output: output}, function() {
-		$(".suggestion").click(function(e) {
-			e.preventDefault();
-			$("#trade_location").val($(this).data("location"));
-			$("#trade_input").val($(this).data("input"));
-			$("#trade_output").val($(this).data("output"));
+	if($("#suggestions").length) {
+		var location = $("#trade_location").length?$("#trade_location").val():0;
+		var input = $(".data .output",$(".trade").last()).data("id");
+		var output = $(".data .input",$(".trade").last()).data("id");
+		$("#suggestions").load("/ajax/barter-suggestions.php", {location: location, input: input, output: output}, function() {
+			$(".suggestion").click(function(e) {
+				e.preventDefault();
+				$("#trade_location").val($(this).data("location"));
+				$("#trade_input").val($(this).data("input"));
+				$("#trade_output").val($(this).data("output"));
+			});
 		});
-	});
+	}
 }
 function open_trade(e) {
 	e.preventDefault();

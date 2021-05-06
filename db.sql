@@ -185,6 +185,7 @@ CREATE TABLE `users` (
   `default_parley` int(10) unsigned DEFAULT NULL,
   `weight` decimal(7,2) DEFAULT NULL,
   `current_weight` decimal(7,2) DEFAULT NULL,
+  `show_suggestions` tinyint(1) DEFAULT 0,
   `admin` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
